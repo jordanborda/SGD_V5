@@ -1,0 +1,13 @@
+site_name: Nombre de tu Proyecto
+theme:
+  name: material
+  language: es
+  features:
+    - navigation.expand
+    - navigation.sections
+nav:
+  - Inicio: index.md
+  - Instalación: instalacion.md
+  - Uso: uso.md
+extra_css:
+  - css/overrides.css
