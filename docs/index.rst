@@ -14,7 +14,7 @@ Bienvenido a la documentación de instalación de Payara. A continuación, encon
    :numbered:
 
    payara
-   payara-docker
+   payara_docker
 
 .. note::
 

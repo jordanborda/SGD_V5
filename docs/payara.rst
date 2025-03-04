@@ -1,5 +1,5 @@
 =============================================================
-Manual de instalacion de servidor PAYARA
+Manual de instalacion de servidor local-virtual PAYARA
 =============================================================
 
 Versión 1.0

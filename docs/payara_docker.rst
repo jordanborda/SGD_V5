@@ -1,5 +1,5 @@
 =============================================================
-MANUAL DE INSTALACIÓN DE SERVIDOR DE APLICACIONES PAYARA EN DOCKER
+Manual de instalacion de Docker PAYARA
 =============================================================
 
 Versión 1.0
