@@ -13,8 +13,8 @@ Bienvenido a la documentación de instalación de Payara. A continuación, encon
    :caption: Contenido
    :numbered:
 
-   manual_instalacion_payara_local  <-- Nombre del archivo .rst del primer manual
-   manual_instalacion_payara_docker <-- Nombre del archivo .rst del segundo manual
+   payara
+   payara-docker
 
 .. note::
 
