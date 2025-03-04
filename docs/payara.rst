@@ -2,10 +2,7 @@
 Manual de instalacion de servidor local-virtual PAYARA
 =============================================================
 
-Versión 1.0
--------------
-
-HISTORIAL DE VERSIONES
+Historial de versiones
 -----------------------
 
 .. list-table::
@@ -22,7 +19,7 @@ HISTORIAL DE VERSIONES
      - Jordan Piero Borda Colque
 
 ---------------------
-1. INTRODUCCIÓN
+INTRODUCCIÓN
 ---------------------
 
 Cuando se desarrolla una aplicación en **Payara Server**, es muy común desplegarla
@@ -34,21 +31,21 @@ Al llevar una aplicación a producción, sin embargo, es muy probable que se uti
 servidores remotos.
 
 -------------------------------------------------------------------------------
-2. OBJETIVOS Y ALCANCE
+OBJETIVOS Y ALCANCE
 -------------------------------------------------------------------------------
 
-2.1. Objetivos
+Objetivos
 --------------
 
 - Brindar las instrucciones para realizar una correcta instalación del servidor de aplicaciones **Payara**.
 
-2.2. Alcance
+Alcance
 ------------
 
 - Este documento sirve como guía de referencia para la instalación del servidor de aplicaciones Payara en un entorno **Linux (Rocky Linux 9)**, utilizando **Java 8** y **Java 11**.
 
 -------------------------------------------------------------------------------
-3. GLOSARIO
+GLOSARIO
 -------------------------------------------------------------------------------
 
 - **Servidor**: Aplicación que contiene los recursos protegidos mediante API REST.  
@@ -59,7 +56,7 @@ servidores remotos.
 - **Servidor de aplicaciones**: Servidor en una red de computadoras que ejecuta aplicaciones y que proporciona servicios de aplicación a clientes.
 
 -------------------------------------------------------------------------------
-4. INSTALACIÓN DE SERVIDOR DE APLICACIONES PAYARA
+INSTALACIÓN DE SERVIDOR DE APLICACIONES PAYARA
 -------------------------------------------------------------------------------
 
 .. important::
@@ -81,7 +78,7 @@ A continuación, se describen los servidores involucrados:
    El IP ``192.168.49.97`` (con **NGINX**) funcionará también como **DAS** (Domain Administration Server)
    de Payara. Será el **administrador de los clústeres**.
 
-4.1. Preparación del entorno en Rocky Linux 9
+Preparación del entorno en Rocky Linux 9
 ---------------------------------------------
 
 Estas configuraciones aplican tanto para el **servidor DAS** como para los **nodos**.
@@ -111,7 +108,7 @@ Estas configuraciones aplican tanto para el **servidor DAS** como para los **nod
 
    sudo systemctl enable --now nfs-server rpcbind
 
-4.2. Instalación y configuración de Java 8
+Instalación y configuración de Java 8
 ------------------------------------------
 
 .. important::
@@ -170,7 +167,7 @@ Luego, **verificar la versión**:
 
    ssh-keygen -t rsa -b 4096
 
-4.3. Configuración del servidor DAS (Java 8)
+Configuración del servidor DAS (Java 8)
 -------------------------------------------
 
 .. important::
@@ -296,7 +293,7 @@ Asegúrese de haber instalado Java 8 y creado el usuario ``payara_prod1`` en **t
 
       alias asadmin='$HOME/payara5/bin/asadmin --port 11048 --user admin --passwordfile $HOME/payara5/pserver'
 
-4.4. Creación de un NFS Server para compartir archivos (Java 8)
+Creación de un NFS Server para compartir archivos (Java 8)
 ---------------------------------------------------------------
 
 Realizar estos pasos en el DAS (``192.168.49.97``) con usuario **sudo**.
@@ -383,12 +380,12 @@ Luego, como usuario ``payara_prod1`` en cada nodo:
 
 Con esto, los nodos comparten el repositorio ``/var/nfs/prod1/sgd_repo`` vía NFS.
 
-4.5. Instalación y configuración de Java 11
+Instalación y configuración de Java 11
 -------------------------------------------
 
 El proceso es muy **similar** al de **Java 8**, pero con otro usuario (ej.: ``payara_prod2``) y otro dominio (``domain_prod2``).
 
-4.5.1. Preparar Java 11 en cada servidor
+Preparar Java 11 en cada servidor
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Se repiten los pasos en:
@@ -434,7 +431,7 @@ Se repiten los pasos en:
 
    ssh-keygen -t rsa -b 4096
 
-4.5.2. Configuración del DAS con Java 11
+Configuración del DAS con Java 11
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **Ingresar** con el usuario ``payara_prod2`` en el DAS (``192.168.49.97``):
@@ -538,7 +535,7 @@ Se repiten los pasos en:
    Al igual que con Java 8, se puede configurar un alias para ``asadmin`` en
    ``~/.bashrc`` para **simplificar** los comandos.
 
-4.6. Creación de un NFS Server para Java 11
+Creación de un NFS Server para Java 11
 ------------------------------------------
 
 En el DAS (``192.168.49.97``), con usuario **sudo**:
@@ -618,7 +615,7 @@ Con esto se completa la configuración de Payara con **Java 8** y **Java 11**, c
 directorios vía **NFS** para despliegues y administración remota.
 
 -------------------------------------------------------------------------------
-5. NOTAS FINALES
+NOTAS FINALES
 -------------------------------------------------------------------------------
 
 .. important::
@@ -631,8 +628,367 @@ directorios vía **NFS** para despliegues y administración remota.
    - Se recomienda **automatizar** la instalación con scripts o herramientas de
      orquestación (Ansible, Puppet, etc.) si se maneja un gran número de servidores.
 
-.. admonition:: Fin del Manual
-   :class: hint
 
-   Este manual completo ha sido diseñado para ser usado en **Read the Docs** u otras
-   plataformas de documentación basadas en reStructuredText.
+-------------------------------------------------------------------------------
+Continuacion de Configuracion del servidor Payara
+-------------------------------------------------------------------------------
+
+Configuración del DAS JAVA 8
+-----------------------------
+
+1. **Verificar el estado del servidor Payara (Server DAS)**:
+
+.. code-block:: bash
+
+   ssh payara_prod1@192.168.49.97
+   cd payara5/bin/
+   ./asadmin start-domain domain_prod1
+
+::
+
+   Acceder a la consola de administración:
+   https://192.168.49.97:11048 (Usuario: admin, Contraseña: Apayara5)
+
+   Configurar Data Grid:
+
+   Menú **Domain** -> **Data Grid**
+
+   Configuración:
+
+      Data Grid Group Name: GridSGD1prod
+      Data Grid Discovery Mode: domain
+
+   Presionar botón SAVE.
+
+2. **Copiar librerías JDBC y scripts para JAVA 8**:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 20 20 35
+
+   * - Archivo Origen
+     - Servidor Destino
+     - Usuario Servidor
+     - Ruta Destino
+   * - ojdbc8-12.2.0.1.jar
+     - 192.168.49.97
+     - payara_prod1
+     - /payara_prod1/payara5/glassfish/domains/domain_prod1/lib
+   * - postgresql-42.5.0.jar
+     - 192.168.49.97
+     - payara_prod1
+     - /payara_prod1/payara5/glassfish/domains/domain_prod1/lib
+   * - instance.sh
+     - 192.168.49.97
+     - payara_prod1
+     - /payara_prod1/
+   * - deploy-sgd_prod.sh
+     - 192.168.49.97
+     - payara_prod1
+     - /payara_prod1/
+   * - deploy-wsiotramite.sh
+     - 192.168.49.97
+     - payara_prod1
+     - /payara_prod1/
+   * - deploy-notisgd.sh
+     - 192.168.49.97
+     - payara_prod1
+     - /payara_prod1/
+   * - deploy-ssev.sh
+     - 192.168.49.97
+     - payara_prod1
+     - /payara_prod1/
+   * - crea_instancia_sgd_prod.sh
+     - 192.168.49.97
+     - payara_prod1
+     - /payara_prod1/scripts/
+   * - crea_instancia_ws_iotramite.sh
+     - 192.168.49.97
+     - payara_prod1
+     - /payara_prod1/scripts/
+   * - crea_instancia_notifica.sh
+     - 192.168.49.97
+     - payara_prod1
+     - /payara_prod1/scripts/
+   * - crea_instancia_ssev.sh
+     - 192.168.49.97
+     - payara_prod1
+     - /payara_prod1/scripts/
+
+3. **Crear directorios**:
+
+.. code-block:: bash
+
+   ssh payara_prod1@192.168.49.97
+   mkdir /opt/payara_prod1/scripts/
+   mkdir /opt/payara_prod1/war-files/
+   mkdir /opt/payara_prod1/sgd_repo/tmp
+
+::
+
+
+4. **Cambiar permisos de ejecución a scripts y reiniciar DOMAIN**:
+
+.. code-block:: bash
+
+   ssh payara_prod1@192.168.49.97
+   chmod 700 *.sh
+   cd payara5/bin/
+   ./asadmin restart-domain domain_prod1
+
+::
+
+
+5. **Crear Instancias Java 8**:
+
+.. code-block:: bash
+
+   ssh payara_prod1@192.168.49.97
+   cd scripts/
+   chmod 700 *.sh
+   ./crea_instancia_sgd_prod.sh
+   ./crea_instancia_ws_iotramite.sh
+   ./crea_instancia_notifica.sh
+   ./crea_instancia_ssev.sh
+
+::
+
+
+6. **Instalar certificados CA (LDAP)**:
+
+.. code-block:: bash
+
+   ssh payara_prod1@192.168.49.97
+   keytool -import -trustcacerts -keystore .zulu8/jre/lib/security/cacerts \
+       -storepass changeit -alias onpe-CA -file onpe-ca.cer
+
+::
+
+
+.. note::
+   (Copiar ``onpe-ca.cer`` previamente al servidor)
+
+7. **Reiniciar y listar instancias Java 8**:
+
+.. code-block:: bash
+
+   ssh payara_prod1@192.168.49.97
+   cd
+   ./instance.sh restart sgd_prod-instance1 && ./instance.sh restart sgd_prod-instance2 && ./instance.sh restart sgd_prod-instance3
+   ./instance.sh restart ws_iotramite-instance1 && ./instance.sh restart ws_iotramite-instance2
+   ./instance.sh list
+
+::
+
+
+
+Configuración del DAS JAVA 11
+-----------------------------
+
+1. **Verificar el estado del servidor Payara (Server Balanceador NGINX)**:
+
+.. code-block:: bash
+
+   ssh payara_prod2@192.168.49.97
+   cd payara5/bin/
+   ./asadmin start-domain domain_prod2
+
+::
+
+
+   Acceder a la consola de administración:
+   https://192.168.49.97:12048 (Usuario: admin, Contraseña: Apayara5)
+
+   Configurar Data Grid:
+
+   Menú **Domain** -> **Data Grid**
+
+   Configuración:
+
+      Data Grid Group Name: GridSGD2prod
+      Data Grid Discovery Mode: domain
+
+   Presionar botón SAVE.
+
+2. **Copiar librerías JDBC y scripts para JAVA 11**:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 20 20 35
+
+   * - Archivo Origen
+     - Servidor Destino
+     - Usuario Servidor
+     - Ruta Destino
+   * - ojdbc8-12.2.0.1.jar
+     - 192.168.49.97
+     - payara_prod2
+     - /payara_prod2/payara5/glassfish/domains/domain_prod2/lib
+   * - postgresql-42.5.0.jar
+     - 192.168.49.97
+     - payara_prod2
+     - /payara_prod2/payara5/glassfish/domains/domain_prod2/lib
+   * - instance.sh
+     - 192.168.49.97
+     - payara_prod2
+     - /payara_prod2/
+   * - deploy-elastic-api.sh
+     - 192.168.49.97
+     - payara_prod2
+     - /payara_prod2/
+   * - deploy-repo.sh
+     - 192.168.49.97
+     - payara_prod2
+     - /payara_prod2/
+   * - deploy-repo_migra.sh
+     - 192.168.49.97
+     - payara_prod2
+     - /payara_prod2/
+   * - deploy-storage_pri.sh
+     - 192.168.49.97
+     - payara_prod2
+     - /payara_prod2/
+   * - deploy-storage_his.sh
+     - 192.168.49.97
+     - payara_prod2
+     - /payara_prod2/
+   * - deploy-apisgdv2.sh
+     - 192.168.49.97
+     - payara_prod2
+     - /payara_prod2/
+   * - deploy-tokensecurity.sh
+     - 192.168.49.97
+     - payara_prod2
+     - /payara_prod2/
+   * - deploy-verifica_sgd.sh
+     - 192.168.49.97
+     - payara_prod2
+     - /payara_prod2/
+   * - deploy-visor_pdf.sh
+     - 192.168.49.97
+     - payara_prod2
+     - /payara_prod2/
+   * - deploy-ws_verifica.sh
+     - 192.168.49.97
+     - payara_prod2
+     - /payara_prod2/
+   * - crea_instancia_repo.sh
+     - 192.168.49.97
+     - payara_prod2
+     - /payara_prod2/scripts/
+   * - crea_instancia_storage_pri.sh
+     - 192.168.49.97
+     - payara_prod2
+     - /payara_prod2/scripts/
+   * - crea_instancia_storage_his.sh
+     - 192.168.49.97
+     - payara_prod2
+     - /payara_prod2/scripts/
+   * - crea_instancia_token_security.sh
+     - 192.168.49.97
+     - payara_prod2
+     - /payara_prod2/scripts/
+   * - crea_instancia_apisgd.sh
+     - 192.168.49.97
+     - payara_prod2
+     - /payara_prod2/scripts/
+   * - crea_instancia_elastic.sh
+     - 192.168.49.97
+     - payara_prod2
+     - /payara_prod2/scripts/
+   * - crea_instancia_repo_migra.sh
+     - 192.168.49.97
+     - payara_prod2
+     - /payara_prod2/scripts/
+   * - crea_instancia_verifica.sh
+     - 192.168.49.97
+     - payara_prod2
+     - /payara_prod2/scripts/
+   * - crea_instancia_visorpdf.sh
+     - 192.168.49.97
+     - payara_prod2
+     - /payara_prod2/scripts/
+   * - crea_instancia_backend.sh
+     - 192.168.49.97
+     - payara_prod2
+     - /payara_prod2/scripts/
+
+3. **Crear directorios**:
+
+.. code-block:: bash
+
+   ssh payara_prod2@192.168.49.97
+   mkdir /opt/payara_prod2/scripts/
+   mkdir /opt/payara_prod2/war-files/
+   mkdir /opt/payara_prod2/sgd_repo/tmp
+
+::
+
+
+4. **Cambiar permisos de ejecución a scripts y reiniciar DOMAIN**:
+
+.. code-block:: bash
+
+   ssh payara_prod2@192.168.49.97
+   chmod 700 *.sh
+   cd payara5/bin/
+   ./asadmin restart-domain domain_prod2
+
+::
+
+
+5. **Crear Instancias Java 11**:
+
+.. code-block:: bash
+
+   ssh payara_prod2@192.168.49.97
+   cd scripts/
+   chmod 700 *.sh
+   ./crea_instancia_repo.sh
+   ./crea_instancia_storage_pri.sh
+   ./crea_instancia_storage_his.sh
+   ./crea_instancia_token_security.sh
+   ./crea_instancia_apisgd.sh
+   ./crea_instancia_elastic.sh
+   ./crea_instancia_repo_migra.sh
+   ./crea_instancia_verifica.sh
+   ./crea_instancia_visorpdf.sh
+   ./crea_instancia_backend.sh
+
+::
+
+
+6. **Instalar certificados CA (LDAP)**:
+
+.. code-block:: bash
+
+   ssh payara_prod2@192.168.49.97
+   keytool -import -trustcacerts -keystore .zulu11/jre/lib/security/cacerts \
+       -storepass changeit -alias onpe-CA -file onpe-ca.cer
+
+::
+
+
+.. note::
+   (Copiar ``onpe-ca.cer`` previamente al servidor)
+
+7. **Reiniciar y listar instancias Java 11**:
+
+.. code-block:: bash
+
+   ssh payara_prod2@192.168.49.97
+   cd
+   ./instance.sh restart ws_backend-instance1 && ./instance.sh restart ws_backend-instance2
+   ./instance.sh restart ws_apisgd-instance1 && ./instance.sh restart ws_apisgd-instance2
+   ./instance.sh restart api_elastic-instance1 && ./instance.sh restart api_elastic-instance2
+   ./instance.sh restart repo_doc-instance1 && ./instance.sh restart repo_doc-instance2 && ./instance.sh restart repo_doc-instance3
+   ./instance.sh restart storage_pri-instance1 && ./instance.sh restart storage_pri-instance2
+   ./instance.sh restart storage_his-instance1 && ./instance.sh restart storage_his-instance2
+   ./instance.sh restart token_security-instance1 && ./instance.sh restart token_security-instance2
+   ./instance.sh restart verifica-instance1 && ./instance.sh restart verifica-instance2
+   ./instance.sh restart visorpdf-instance1 && ./instance.sh restart visorpdf-instance2
+   ./instance.sh restart repo_migra-instance1
+   ./instance.sh list
+
+::
+
