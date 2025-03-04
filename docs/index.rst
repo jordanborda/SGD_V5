@@ -1,3 +1,13 @@
+.. toctree::
+   :maxdepth: 2
+   :caption: Contenido:
+
+   introduccion
+   configuracion
+   documentacion
+   configuracion_avanzada
+   solucion_problemas
+   conclusion
 
 Manual para Read the Docs
 ==========================
