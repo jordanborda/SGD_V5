@@ -40,13 +40,3 @@ Requisitos previos
 *   Una cuenta en GitHub (o GitLab, Bitbucket, etc.)
 *   Conocimientos básicos de Git.
 *   Un proyecto de software con documentación (o la intención de crearla).
-
-.. toctree::
-   :hidden:
-
-   introduccion
-   configuracion
-   documentacion
-   configuracion_avanzada
-   solucion_problemas
-   conclusion
