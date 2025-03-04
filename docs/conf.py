@@ -31,7 +31,7 @@ html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 
 # Actualiza para usar las mismas imágenes e íconos que la documentación de Read the Docs
-html_logo = 'img/logo.svg'
+html_logo = '_static/logo.svg'
 html_favicon = 'img/favicon.ico'
 
 html_theme_options = {
