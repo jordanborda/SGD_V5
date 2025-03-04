@@ -3,24 +3,20 @@
 # For the full list of configuration options, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-# -- Project information -----------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
-
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))  # Añade la ruta de tu proyecto (si es necesario)
 
+# -- Project information -----------------------------------------------------
 project = 'Manual para Read the Docs'
 copyright = '2023, Jordan Borda'
 author = 'Jordan Borda'
 release = '0.1'
 
 # -- General configuration ---------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
-
 extensions = [
     'sphinx.ext.autodoc',
-    'sphinx.ext.napoleon', #google docstring para python
+    'sphinx.ext.napoleon',  # Para soportar Google style docstrings en Python
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
     'sphinx.ext.intersphinx'
@@ -28,26 +24,22 @@ extensions = [
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
-
 language = 'es'
 
 # -- Options for HTML output -------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
-
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
-html_logo = '_static/mi_logo.png'  # Agrega la ruta a tu logo
-html_favicon = '_static/favicon.ico' # Agrega la ruta al favicon (opcional)
+
+# Actualiza para usar las mismas imágenes e íconos que la documentación de Read the Docs
+html_logo = 'img/logo.svg'
+html_favicon = 'img/favicon.ico'
 
 html_theme_options = {
-    'logo_only': False,  # Cambia a True si solo quieres el logo, sin el nombre del proyecto
-    'display_version': False, # Ocultar la versión de la documentación
-    'logo': '_static/mi_logo.png' # Opcional: Especifica de nuevo la ruta al logo dentro de las opciones del tema
+    'logo_only': True,       # Muestra solo el logo, sin el nombre del proyecto
+    'display_version': False,  # Oculta la versión de la documentación
 }
 
 # -- Extension configuration -------------------------------------------------
 
 # -- Options for todo extension ----------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/extensions/todo.html#configuration
-
 todo_include_todos = True
