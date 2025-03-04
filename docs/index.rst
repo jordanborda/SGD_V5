@@ -4,6 +4,7 @@
 
    introduccion
    payara
+   payara_docker
    configuracion
    documentacion
    configuracion_avanzada
