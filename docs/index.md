@@ -1,8 +1,6 @@
 # Bienvenido a la documentación de Nombre de tu Proyecto
 
-Aquí encontrarás la información necesaria para utilizar el proyecto.
-
-## Secciones
+Este manual te ayudará a conocer e instalar el proyecto. Utiliza el menú de navegación para acceder a las diferentes secciones.
 
 - [Instalación](instalacion.md)
 - [Uso](uso.md)
