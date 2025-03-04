@@ -29,8 +29,6 @@ extensions = [
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
-
-
 language = 'es'
 
 # -- Options for HTML output -------------------------------------------------
@@ -38,6 +36,14 @@ language = 'es'
 
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
+html_logo = '_static/mi_logo.png'  # Agrega la ruta a tu logo
+html_favicon = '_static/favicon.ico' # Agrega la ruta al favicon (opcional)
+
+html_theme_options = {
+    'logo_only': False,  # Cambia a True si solo quieres el logo, sin el nombre del proyecto
+    'display_version': False, # Ocultar la versión de la documentación
+    'logo': '_static/mi_logo.png' # Opcional: Especifica de nuevo la ruta al logo dentro de las opciones del tema
+}
 
 # -- Extension configuration -------------------------------------------------
 
