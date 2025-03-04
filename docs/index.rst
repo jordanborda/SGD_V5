@@ -1,44 +1,29 @@
+
+============================================
+Documentación de Instalación de Payara
+============================================
+
+Bienvenido a la documentación de instalación de Payara. A continuación, encontrarás dos manuales:
+
+- **Manual de Instalación de Servidor de Aplicaciones Payara (en servidores locales).**
+- **Manual de Instalación de Servidor de Aplicaciones Payara en Docker.**
+
 .. toctree::
    :maxdepth: 2
-   :caption: Contenido:
+   :caption: Contenido
+   :numbered:
 
-   introduccion
-   payara
-   payara_docker
-   configuracion
-   documentacion
-   configuracion_avanzada
-   solucion_problemas
-   conclusion
-
-Manual para Read the Docs
-==========================
-
-¡Bienvenido al Manual para Read the Docs!  Esta guía te ayudará a crear y publicar tu documentación de forma sencilla y efectiva.
+   manual_instalacion_payara_local  <-- Nombre del archivo .rst del primer manual
+   manual_instalacion_payara_docker <-- Nombre del archivo .rst del segundo manual
 
 .. note::
-   Este manual está en construcción. ¡Ayúdanos a mejorarlo!
 
-Introducción
-------------
+   Esta documentación reúne las guías de instalación y configuración de Payara
+   en dos escenarios distintos:
+   
+   1. **Instalación local** en servidores físicos o virtuales (Rocky Linux, Java 8/11, NFS, etc.).
+   2. **Instalación en Docker**, construyendo y ejecutando Payara en un contenedor.
 
-¿Qué es Read the Docs?
-^^^^^^^^^^^^^^^^^^^^^^
+   Para cada una de ellas, se describen los pasos esenciales, comandos y
+   recomendaciones de buenas prácticas.
 
-Read the Docs es una plataforma de alojamiento de documentación de código abierto.  Te permite generar automáticamente documentación a partir de tu código (normalmente a partir de comentarios en el código o archivos reStructuredText/Markdown) y alojarla de forma gratuita.
-
-¿Por qué usar Read the Docs?
-^^^^^^^^^^^^^^^^^^^^^^^^^
-
-*   **Gratuito:**  Alojamiento gratuito para proyectos de código abierto.
-*   **Fácil de usar:**  Integración sencilla con GitHub, GitLab, Bitbucket, etc.
-*   **Generación automática:**  Genera la documentación automáticamente cada vez que haces un commit a tu repositorio.
-*   **Control de versiones:**  Soporte para múltiples versiones de tu documentación.
-*   **Personalizable:**  Amplias opciones de personalización.
-
-Requisitos previos
-^^^^^^^^^^^^^^^^^^^^
-
-*   Una cuenta en GitHub (o GitLab, Bitbucket, etc.)
-*   Conocimientos básicos de Git.
-*   Un proyecto de software con documentación (o la intención de crearla).
