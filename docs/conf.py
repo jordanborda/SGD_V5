@@ -8,8 +8,8 @@ import sys
 sys.path.insert(0, os.path.abspath('..'))  # Añade la ruta de tu proyecto (si es necesario)
 
 # -- Project information -----------------------------------------------------
-project = 'Manual para Read the Docs'
-copyright = '2023, Jordan Borda'
+project = 'Manual para Sistema de Gestion Documentaria V5'
+copyright = '2025, Jordan Borda'
 author = 'Jordan Borda'
 release = '0.1'
 
